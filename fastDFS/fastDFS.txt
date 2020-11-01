@@ -1,0 +1,9 @@
+docker run -dit --network=fastdfs-net --name tracker -p 22122:22122 -p 80:80 -v /var/fdfs/tracker:/var/fdfs/ -v /var/fdfs/nginx_conf/conf.d/tracker.conf:/usr/local/nginx/conf/conf.d/tracker.conf -v /etc/localtime:/etc/localtime ygqygq2/fastdfs-nginx:latest tracker
+
+docker run -dit --network=fastdfs-net --name storage0 -e TRACKER_SERVER=tracker:22122 -v /var/fdfs/storage0:/var/fdfs -v /etc/localtime:/etc/localtime ygqygq2/fastdfs-nginx:latest storage
+
+#复制配置文件
+cp -f /nginx_conf/conf.d/tracker.conf /usr/local/nginx/conf/conf.d/
+
+#刷新nginx
+nginx -s reload
